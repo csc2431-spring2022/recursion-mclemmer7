@@ -11,7 +11,7 @@ using std::ostream;
 unsigned long long int Fibonacci(unsigned int n);
 void PrintReverseString(const string& str, ostream& output = cout);
 // You may change the parameters of these functions
-size_t MinimumPosition(const int array[], size_t size);
+size_t MinimumPosition(const int array[], size_t size, size_t min);
 void SelectionSort(int array[], size_t size);
 
 
@@ -46,10 +46,9 @@ int main() {
 			cout << "\tPassed " << ++passed << " tests" << endl;
 	}
 
-
 	cout << "Testing Minimum Position Finding" << endl;
 	for (int i = 0; i < TESTS; ++i) {
-		minimumResponses[i] = MinimumPosition(data[i], ELEMENTS);
+		minimumResponses[i] = MinimumPosition(data[i], ELEMENTS, 0);
 		if (minimumResponses[i] == minimumSolutions[i]){
 			cout << "\tPassed " << ++passed << " tests" << endl;
 		}
@@ -85,14 +84,55 @@ int main() {
 }
 
 unsigned long long int Fibonacci(unsigned int n){
+    if (n == 0 || n==1) {
+        return n;
+    } else {
+        return Fibonacci(n-1) + Fibonacci(n-2);
+    }
 	return 0;
 }
 void PrintReverseString(const string& str, ostream& output){
+    // call PrintReverseString
+    // Then output the
+    output << str[str.size()-1];
+    string  rev = str.substr(0, str.size()-1);
+    if (rev.size() > 0) {
+        PrintReverseString(rev,output);
+    }
 }
 // You may change the parameters of these functions
-size_t MinimumPosition(const int array[], size_t size){
-	return 0;
-}
-void SelectionSort(int array[], size_t size){
+size_t MinimumPosition(const int array[], size_t size, size_t min){
+    if (size == min) {
+        return min;
+    } else {
+        if (array[size] < array[min]) {
+            return MinimumPosition(array, size, min+1);
+        } else {
+            return MinimumPosition(array, size-1, min);
+        }
+    }
 
+    return 0;
+}
+
+// Selects the first element of the array and swaps it with the smallest
+//element of the array.
+//Then it does selection sort on the array starting at the next position.
+//It will stop when there is only one element.
+void SelectionSort(int array[], size_t size, currentIndex){
+    int minimum;
+    int tmp;
+    if (size == 0 || size == 1) {
+        cout << "Nothing to sort" << endl;
+    } else {
+        minimum = MinimumPosition(array, size, 0);
+        // Swap the first array element with the minimum element
+        // use size as the index
+        tmp = array[minimum];
+        array[minimum] = array[];
+        array[size] = tmp;
+
+        SelectionSort(array, size-1);
+    }
+    array[0]
 }
