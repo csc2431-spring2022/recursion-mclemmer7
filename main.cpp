@@ -12,7 +12,7 @@ unsigned long long int Fibonacci(unsigned int n);
 void PrintReverseString(const string& str, ostream& output = cout);
 // You may change the parameters of these functions
 size_t MinimumPosition(const int array[], size_t size, size_t min);
-void SelectionSort(int array[], size_t size);
+void SelectionSort(int array[], size_t size, size_t currentIndex);
 
 
 int main() {
@@ -56,7 +56,7 @@ int main() {
 	cout << "Testing Sorting" << endl;
 	bool equal;
 	for (int i = 0; i < TESTS; ++i) {
-		SelectionSort(data[i], ELEMENTS);
+		SelectionSort(data[i], ELEMENTS, 0);
 		equal = true;
 		for (int j = 0; j < ELEMENTS; ++j) {
 			if (data[i][j] != sortedArrays[i][j]){
@@ -101,38 +101,43 @@ void PrintReverseString(const string& str, ostream& output){
     }
 }
 // You may change the parameters of these functions
-size_t MinimumPosition(const int array[], size_t size, size_t min){
-    if (size == min) {
-        return min;
+size_t MinimumPosition(const int array[], size_t size, size_t minIndex){
+    if (size == minIndex) {
+        return minIndex;
     } else {
-        if (array[size] < array[min]) {
-            return MinimumPosition(array, size, min+1);
+        if (array[size-1] < array[minIndex]) {
+            return MinimumPosition(array, size, minIndex+1);
         } else {
-            return MinimumPosition(array, size-1, min);
+            return MinimumPosition(array, size-1, minIndex);
         }
     }
-
-    return 0;
 }
 
 // Selects the first element of the array and swaps it with the smallest
 //element of the array.
 //Then it does selection sort on the array starting at the next position.
 //It will stop when there is only one element.
-void SelectionSort(int array[], size_t size, currentIndex){
+void SelectionSort(int array[], size_t size, size_t currentIndex){
     int minimum;
     int tmp;
-    if (size == 0 || size == 1) {
-        cout << "Nothing to sort" << endl;
+    if (currentIndex == size) {
+        // base case
+        return;
     } else {
-        minimum = MinimumPosition(array, size, 0);
+        minimum = MinimumPosition(array, size, currentIndex);
         // Swap the first array element with the minimum element
         // use size as the index
-        tmp = array[minimum];
-        array[minimum] = array[];
-        array[size] = tmp;
 
-        SelectionSort(array, size-1);
+        if (currentIndex == minimum) {
+            // go to the next call
+            return SelectionSort(array, size, currentIndex + 1);
+        } else {
+
+            tmp = array[minimum];
+            array[minimum] = array[currentIndex];
+            array[currentIndex] = tmp;
+
+            return SelectionSort(array, size, currentIndex + 1);
+        }
     }
-    array[0]
 }
